@@ -3,7 +3,9 @@ package org.owasp.webgoat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtException;
@@ -72,7 +74,7 @@ public class JWTLessonIntegrationTest extends IntegrationTest {
   private String getSecretToken(String token) {
     for (String key : JWTSecretKeyEndpoint.SECRETS) {
       try {
-        Jwt jwt = Jwts.parser().setSigningKey(TextCodec.BASE64.encode(key)).parse(token);
+        Jws<Claims> jwt = Jwts.parser().setSigningKey(TextCodec.BASE64.encode(key)).parseClaimsJws(token);
       } catch (JwtException e) {
         continue;
       }
